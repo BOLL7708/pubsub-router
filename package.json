@@ -1,0 +1,21 @@
+{
+  "name": "pubsub-router",
+  "version": "0.0.1",
+  "description": "Route Twitch PubSub events to other WebSocket connections",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "twitch",
+    "pubsub",
+    "websockets"
+  ],
+  "author": "Andreas \"BOLL\" Aronsson",
+  "license": "ISC",
+  "devDependencies": {
+    "fs": "0.0.1-security",
+    "node-fetch": "^2.6.1",
+    "ws": "^7.4.4"
+  }
+}
