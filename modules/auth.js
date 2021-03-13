@@ -1,11 +1,12 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
 const utils = require("./utils.js");
-const config = require("../config.json");
 
 let _oauthInfo = {access_token: '', refresh_token: '', updated: ''};
+let _config;
 
-async function getToken() {
+async function getToken(config) {
+    _config = config;
     try {
         // Read local file
         _oauthInfo = JSON.parse(fs.readFileSync('./tokens.json', 'utf-8'));
@@ -31,8 +32,8 @@ async function refresh () {
         body: new URLSearchParams({
             'grant_type': 'refresh_token',
             'refresh_token': _oauthInfo.refresh_token,
-            'client_id': config.twitch.client_id,
-            'client_secret': config.twitch.client_secret
+            'client_id': _config.twitch.client_id,
+            'client_secret': _config.twitch.client_secret
         })
     }).then((response) => response.json()).then(json => {
         if (!json.error && !(json.status >= 300)) {

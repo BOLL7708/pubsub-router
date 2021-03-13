@@ -3,5 +3,9 @@
         "username": "",
         "client_id": "",
         "client_secret": ""
+    },
+    "obs": {
+        "port": 4444,
+        "password": ""
     }
 }

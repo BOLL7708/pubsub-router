@@ -8,7 +8,7 @@ let _pingTimestamp;
 
 function init(token) {
     _token = token;
-	console.log(`Starting websockets with token: ${token}`);
+	console.log(`PubSub starting: ${token}`);
     startConnectLoop();
 }
 
@@ -29,7 +29,7 @@ let connect = function() {
 
 	function onOpen(evt) {
         stopConnectLoop();
-        console.log("Opened connection!");
+        console.log("PubSub connected");
 		let payload = {
 			type: "LISTEN",
 			nonce: "7708",
@@ -43,12 +43,10 @@ let connect = function() {
 	}
 	function onClose(evt) {
         clearInterval(_pingInterval);
-		console.log("Websockets disconnected, starting connection loop.");
+		console.log("PubSub disconnected: starting loop");
         startConnectLoop();
 	}
 	function onMessage(evt) {
-        // TODO: Listen to RECONNECT here, when that happens set interval to reconnect.
-        // Listen to PONG and make sure it was not later than 10 seconds after PING
 		let data = JSON.parse(evt.data);
         switch(data.type) {
             case "MESSAGE": 
@@ -61,18 +59,18 @@ let connect = function() {
                 _socket.close();
                 break;
             case "PONG":
-                if(Date.now() - _pingTimestamp > 10000) _socket.close();
+                if(new Date().now() - _pingTimestamp > 10000) _socket.close();
+                break;
             case "RESPONSE":
                 console.table(evt.data);
                 break;
             default:
                 console.log(`Unhandled message: ${data.type}`);
                 break;
-        }
-        
+        }        
 	}
 	function onError(evt) {
-		console.log("Websockets error: " + evt.data);
+		console.log("PubSub error: " + evt.data);
         _socket.close();
         startConnectLoop();
 	}
